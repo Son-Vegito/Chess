@@ -31,6 +31,10 @@ def main():
     clock = pygame.time.Clock()
     screen.fill(pygame.Color('White'))
     gs=chessEngine.GameState()
+    
+    validMoves=gs.getValidMoves()
+    moveMade = False    # flag variable to check if a move is made
+    
     loadImages()
     running = True
     squareSelected=()   #keeps track of the last click of the user
@@ -58,7 +62,9 @@ def main():
                 if len(playerClicks)==2:
                     move=chessEngine.Move(playerClicks[0],playerClicks[1],gs.board)
                     print(move.getChessNotation())
-                    gs.makeMove(move)
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        moveMade=True
                     # reset
                     squareSelected=()
                     playerClicks=[]
@@ -67,7 +73,12 @@ def main():
             elif event.type==pygame.KEYDOWN:
                 if event.key == pygame.K_z:
                     gs.undoMove()
-                
+                    moveMade=True
+        
+        if moveMade:
+            validMoves=gs.getValidMoves()
+            movemade=False
+        
         drawGameState(screen,gs)
         clock.tick(FPS)
         pygame.display.flip()
