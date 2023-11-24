@@ -42,6 +42,7 @@ def main():
             if event.type==pygame.QUIT:
                 running=False
 
+            # mouse handler
             elif event.type==pygame.MOUSEBUTTONDOWN:
                 location=pygame.mouse.get_pos() 
                 col=location[0]//SQUARE_SIZE
@@ -61,6 +62,11 @@ def main():
                     # reset
                     squareSelected=()
                     playerClicks=[]
+                
+            # key handler
+            elif event.type==pygame.KEYDOWN:
+                if event.key == pygame.K_z:
+                    gs.undoMove()
                 
         drawGameState(screen,gs)
         clock.tick(FPS)
