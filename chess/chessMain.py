@@ -26,13 +26,15 @@ def loadImages():
 
 # main driver
 # handle user input and update graphics
-def main():
+def main(): 
     screen= pygame.display.set_mode((WIDTH,HEIGHT))
     clock = pygame.time.Clock()
     screen.fill(pygame.Color('White'))
     gs=chessEngine.GameState()
     loadImages()
     running = True
+    squareSelected=()   #keeps track of the last click of the user
+    playerClicks=[]     #keeps track of player's click [list(tuples)]
     
     while(running):
         
@@ -40,6 +42,26 @@ def main():
             if event.type==pygame.QUIT:
                 running=False
 
+            elif event.type==pygame.MOUSEBUTTONDOWN:
+                location=pygame.mouse.get_pos() 
+                col=location[0]//SQUARE_SIZE
+                row=location[1]//SQUARE_SIZE
+                
+                if squareSelected==(row,col):
+                    squareSelected=()
+                    playerClicks=[]
+                else:
+                    squareSelected=(row,col)
+                    playerClicks.append(squareSelected)
+                    
+                if len(playerClicks)==2:
+                    move=chessEngine.Move(playerClicks[0],playerClicks[1],gs.board)
+                    print(move.getChessNotation())
+                    gs.makeMove(move)
+                    # reset
+                    squareSelected=()
+                    playerClicks=[]
+                
         drawGameState(screen,gs)
         clock.tick(FPS)
         pygame.display.flip()
