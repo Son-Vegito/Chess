@@ -65,6 +65,8 @@ class GameState():
                         self.getQueenMoves(r,c,moves)
                     elif piece == 'N':
                         self.getKnightMoves(r,c,moves)
+                    elif piece== 'K':
+                        self.getKingMoves(r,c,moves)
         return moves
     
     def getPawnMoves(self,r,c,moves):
@@ -158,6 +160,23 @@ class GameState():
             allyColour='b'
         
         for m in knigthMoves:
+            newRow=r+m[0]
+            newCol=c+m[1]
+            
+            if 0<=newRow<8 and 0<=newCol<8:
+                endPiece=self.board[newRow][newCol]
+                if endPiece[0]!=allyColour:
+                    moves.append(Move((r,c),(newRow,newCol),self.board))
+    
+    def getKingMoves(self,r,c,moves):
+        kingMoves=((1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1))
+        allyColour='b'
+        if self.whiteToMove:
+            allyColour='w'
+        else:
+            allyColour='b'
+        
+        for m in kingMoves:
             newRow=r+m[0]
             newCol=c+m[1]
             
