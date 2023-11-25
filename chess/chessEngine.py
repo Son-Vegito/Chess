@@ -55,12 +55,37 @@ class GameState():
                 turn = self.board[r][c][0]
                 if (turn =='w' and self.whiteToMove) or (turn=='b' and not self.whiteToMove):
                     piece = self.board[r][c][1]
-                    
                     if piece=='P':
                         self.getPawnMoves(r,c,moves)
                     elif piece == 'R':
                         self.getRookMoves(r,c,moves)
         return moves
+    
+    def getPawnMoves(self,r,c,moves):
+        if self.whiteToMove:    # white pawn move
+            if self.board[r-1][c]=='--':    # 1 square move
+                moves.append(Move((r,c),(r-1,c),self.board))
+                if r==6 and self.board[r-2][c]=='--':   # 2 square move
+                    moves.append(Move((r,c),(r-2,c),self.board))
+            if c>0 and self.board[r-1][c-1][0]=='b':
+                moves.append(Move((r,c),(r-1,c-1),self.board))
+            if c+1<len(self.board) and self.board[r-1][c+1][0]=='b':
+                moves.append(Move((r,c),(r-1,c+1),self.board))
+                
+                
+        else:   # black pawn move
+            if self.board[r+1][c]=='--':    # 1 square move
+                moves.append(Move((r,c),(r+1,c),self.board))
+                if r==1 and self.board[r+2][c]=='--':   # 2 square move
+                    moves.append(Move((r,c),(r+2,c),self.board))
+            if c>0 and self.board[r+1][c-1][0]=='w':
+                moves.append(Move((r,c),(r+1,c-1),self.board))
+            if c+1<len(self.board) and self.board[r+1][c+1][0]=='w':
+                moves.append(Move((r,c),(r+1,c+1),self.board))
+                    
+                    
+    def getRookMoves(self,r,c,moves):
+        pass
     
 class Move():
     
@@ -78,6 +103,13 @@ class Move():
         self.endCol=endSquare[1]
         self.pieceMoved=board[self.startRow][self.startCol]
         self.pieceCaptured=board[self.endRow][self.endCol]
+        self.moveID=self.startRow*1000+self.startCol*100+self.endRow*10+self.endCol
+        
+    # overriding the equals method
+    def __eq__(self,other):
+        if isinstance(other, Move):
+            return self.moveID==other.moveID
+        return False
         
         
     def getChessNotation(self):
