@@ -63,6 +63,8 @@ class GameState():
                         self.getBishopMoves(r,c,moves)
                     elif piece == 'Q':
                         self.getQueenMoves(r,c,moves)
+                    elif piece == 'N':
+                        self.getKnightMoves(r,c,moves)
         return moves
     
     def getPawnMoves(self,r,c,moves):
@@ -145,6 +147,24 @@ class GameState():
     def getQueenMoves(self,r,c,moves):
         self.getRookMoves(r,c,moves)
         self.getBishopMoves(r,c,moves)
+    
+    
+    def getKnightMoves(self,r,c,moves):
+        knigthMoves=((-2,-1),(-2,1),(2,1),(2,-1),(1,2),(1,-2),(-1,-2),(-1,2))
+        allyColour='b'
+        if self.whiteToMove:
+            allyColour='w'
+        else:
+            allyColour='b'
+        
+        for m in knigthMoves:
+            newRow=r+m[0]
+            newCol=c+m[1]
+            
+            if 0<=newRow<8 and 0<=newCol<8:
+                endPiece=self.board[newRow][newCol]
+                if endPiece[0]!=allyColour:
+                    moves.append(Move((r,c),(newRow,newCol),self.board))
     
     
 class Move():

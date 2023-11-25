@@ -33,7 +33,6 @@ def main():
     gs=chessEngine.GameState()
     
     validMoves=gs.getValidMoves()
-    moveMade = False    # flag variable to check if a move is made
     
     loadImages()
     running = True
@@ -42,6 +41,7 @@ def main():
     
     while(running):
         
+        moveMade = False    # flag variable to check if a move is made
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 running=False
@@ -61,8 +61,8 @@ def main():
                     
                 if len(playerClicks)==2:
                     move=chessEngine.Move(playerClicks[0],playerClicks[1],gs.board)
-                    print(move.getChessNotation())
                     if move in validMoves:
+                        print(move.getChessNotation())
                         gs.makeMove(move)
                         moveMade=True
                     # reset
@@ -77,7 +77,7 @@ def main():
         
         if moveMade:
             validMoves=gs.getValidMoves()
-            movemade=False
+            moveMade=False
         
         drawGameState(screen,gs)
         clock.tick(FPS)
