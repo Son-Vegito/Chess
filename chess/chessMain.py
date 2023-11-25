@@ -65,9 +65,11 @@ def main():
                         print(move.getChessNotation())
                         gs.makeMove(move)
                         moveMade=True
-                    # reset
-                    squareSelected=()
-                    playerClicks=[]
+                        # reset
+                        squareSelected=()
+                        playerClicks=[]
+                    else:
+                        playerClicks=[squareSelected]
                 
             # key handler
             elif event.type==pygame.KEYDOWN:
