@@ -67,6 +67,7 @@ class GameState():
                 moves.append(Move((r,c),(r-1,c),self.board))
                 if r==6 and self.board[r-2][c]=='--':   # 2 square move
                     moves.append(Move((r,c),(r-2,c),self.board))
+            # capture
             if c>0 and self.board[r-1][c-1][0]=='b':
                 moves.append(Move((r,c),(r-1,c-1),self.board))
             if c+1<len(self.board) and self.board[r-1][c+1][0]=='b':
@@ -78,6 +79,7 @@ class GameState():
                 moves.append(Move((r,c),(r+1,c),self.board))
                 if r==1 and self.board[r+2][c]=='--':   # 2 square move
                     moves.append(Move((r,c),(r+2,c),self.board))
+            # capture
             if c>0 and self.board[r+1][c-1][0]=='w':
                 moves.append(Move((r,c),(r+1,c-1),self.board))
             if c+1<len(self.board) and self.board[r+1][c+1][0]=='w':
@@ -85,7 +87,29 @@ class GameState():
                     
                     
     def getRookMoves(self,r,c,moves):
-        pass
+        directions=((-1,0),(1,0),(0,-1),(0,1))  # up, down, left, right
+        enemyColour='b'
+        if self.whiteToMove:
+            enemyColour='b'
+        else:
+            enemyColour='w'
+            
+        for d in directions:
+            for i in range(1,8):
+                newRow=r+d[0]*i
+                newCol=c+d[1]*i
+                
+                if 0<=newRow<8 and 0<=newCol<8: # on board
+                    endPiece=self.board[newRow][newCol]
+                    if endPiece=='--':   # empty 
+                        moves.append(Move((r,c),(newRow,newCol),self.board))
+                    elif endPiece[0]==enemyColour: # emeny piece capture
+                        moves.append(Move((r,c),(newRow,newCol),self.board))
+                        break
+                    else:   # friendly piece
+                        break
+                else:   # off board
+                    break
     
 class Move():
     
