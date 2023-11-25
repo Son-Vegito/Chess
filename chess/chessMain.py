@@ -33,6 +33,7 @@ def main():
     gs=chessEngine.GameState()
     
     validMoves=gs.getValidMoves()
+    moveMade = False    # flag variable to check if a move is made
     
     loadImages()
     running = True
@@ -41,7 +42,6 @@ def main():
     
     while(running):
         
-        moveMade = False    # flag variable to check if a move is made
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 running=False
